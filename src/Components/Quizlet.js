@@ -1,48 +1,48 @@
-import { FlashcardArray } from "react-quizlet-flashcard";
+import { FlashcardArray } from "../flash_card_src";
+const axios = require('axios').default;
+function Quizlet(props) {
+    function cardChange(data) {
 
-function Quizlet() {
-  const cards = [
-    {
-      id: 1,
-      front: "What is the capital of <u>Alaska</u>?",
-      back: "Juneau",
-      frontChild: <div>Hello there</div>,
-      backChild: <p>This is a back child</p>
-    },
-    {
-      id: 2,
-      front: "What is the capital of California?",
-      back: "Sacramento",
-    },
-    {
-      id: 3,
-      front: "What is the capital of New York?",
-      back: "Albany",
-    },
-    {
-      id: 4,
-      front: "What is the capital of Florida?",
-      back: "Tallahassee",
-    },
-    {
-      id: 5,
-      front: "What is the capital of Texas?",
-      back: "Austin",
-    },
-    {
-      id: 6,
-      front: "What is the capital of New Mexico?",
-      back: "Santa Fe",
-    },
-    {
-      id: 7,
-      front: "What is the capital of Arizona?",
-      back: "Phoenix",
-    },
-  ];
+      if(props.prevIndex>data.index){
+        console.log("to back")
+        props.setPrevIndex(data.index)
+        
+      }
+      else if(props.prevIndex<data.index){
+        console.log("to front")
+        if (props.yes_no[0]==false && props.yes_no[1]==false){
+          console.log("no input")
+        }
+        else{
+          axios.post('http://localhost:8000/recall_insert', {
+            id: Number(props.cards[props.prevIndex].id),
+            verdict: props.yes_no
+         
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+        console.log(props.yes_no,props.cards[props.prevIndex],data.id)
+        props.setPrevIndex(data.index)
+      }
+      else{
+        console.log("no change")
+      }
+      
+      props.setYesNo([false,false])
+      
+     
+    }
+
   return (
     <div>
-      <FlashcardArray cards={cards} />
+      <FlashcardArray cards={props.cards} setCurrentCard={(data)=>cardChange(data)} />
+      {/* <FlashcardArray cards={props.cards} setCurrentCard = {(currentCard)=>console.log(currentCard)}/>       */}
+   
     </div>
   );
 }
