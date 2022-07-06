@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 const axios = require('axios').default;
 const root = ReactDOM.createRoot(document.getElementById('root'));
-axios.get('http://localhost:8000/cards')
+console.log('process.env',process.env)
+axios.get('http://'+process.env.REACT_APP_HOST+':8000/cards')
   .then(function (response) {
     console.log(response.data)
     root.render(

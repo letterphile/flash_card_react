@@ -14,7 +14,7 @@ function Quizlet(props) {
           console.log("no input")
         }
         else{
-          axios.post('http://localhost:8000/recall_insert', {
+          axios.post('http://'+process.env.REACT_APP_HOST+':8000/recall_insert', {
             id: Number(props.cards[props.prevIndex].id),
             verdict: props.yes_no
          
